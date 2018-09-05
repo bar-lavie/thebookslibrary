@@ -1,0 +1,68 @@
+<button type="button" class="btn btn-primary d-block mx-auto my-3" data-toggle="modal" data-target="#add_modal">
+  Add New Book
+</button>
+
+
+<div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Book</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeModal>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="addBook(form)">
+
+        <div class="modal-body">
+
+          <div *ngIf="form.errors" class="alert alert-danger">One or more inputs are missing...</div>
+
+          <div class="form-group">
+            <label for="title" class="sr-only">Book Title</label>
+            <input type="text" class="form-control" id="title" name="title" formControlName="title" placeholder="Book title*"
+              (input)="bookTitleFix($event)" [value]="fixedTitle" #title>
+            <div *ngIf="form.get('title').touched && form.get('title').invalid" class="alert alert-danger">
+              <div *ngIf="form.get('title').errors.required">Book title is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="authors" class="sr-only">Book Autohrs</label>
+            <input type="text" class="form-control" id="authors" name="authors" formControlName="authors" placeholder="Book autohrs name*">
+            <div *ngIf="form.get('authors').touched && form.get('authors').invalid" class="alert alert-danger">
+              <div *ngIf="form.get('authors').errors.required">Book autohrs is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="img" class="sr-only">Book Image</label>
+            <input type="text" class="form-control" id="img" name="img" formControlName="img" placeholder="Book image url">
+          </div>
+
+          <div class="form-group">
+            <label for="published" class="sr-only">Book Year Publish</label>
+            <input type="text" class="form-control" id="published" name="published" formControlName="published"
+              placeholder="Book year publish*">
+            <small>Date format e.g:
+              <strong>2005</strong>
+            </small>
+            <div *ngIf="form.get('published').touched && form.get('published').invalid" class="alert alert-danger">
+              <div *ngIf="form.get('published').errors.required">Book published date is required</div>
+              <div *ngIf="form.get('published').errors.pattern">Book published date not must contain numbers only</div>
+              <div *ngIf="form.get('published').errors.max">Book published date is too big</div>
+              <div *ngIf="form.get('published').errors.min">Book published date is too small</div>
+            </div>
+          </div>
+
+          <!-- {{form.value | json}} -->
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary mr-2" [disabled]="form.invalid">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

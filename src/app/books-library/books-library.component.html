@@ -1,0 +1,36 @@
+<div class="container">
+  <app-errors *ngIf="errors; else booksContent" [errors]="errors"></app-errors>
+
+  <ng-template #booksContent>
+
+    <h1 class="my-5 text-center">The Harry-Potter Books Collection</h1>
+
+    <app-add-book (newBook)="addBook($event)"></app-add-book>
+
+    <div class="row">
+      <div *ngFor="let book of books?.reverse(); let i = index" class="col-md-4 text-center">
+        <div class="card p-3 m-3">
+          <p>{{book.authors}}</p>
+          <p><strong>{{book.title | titlecase}}</strong></p>
+          <div>
+            <img *ngIf="book.img; else noImage" class="img-fluid" alt="Book Image" src="{{book.img}}"><br>
+            <ng-template #noImage>
+              <img class="img-fluid" alt="No image to display" src="assets/images/no-image.png" width="150"><br>
+            </ng-template>
+          </div>
+          <small>Published: {{book.published}}</small><br>
+          <p class="badge badge-dark">Book ID: {{book.id}}</p><br>
+          <div class="actions d-flex justify-content-around mt-2">
+            <button type="button" class="btn btn-defalut" data-toggle="modal" data-target="#edit_modal" (click)="book_to_edit = book">Edit</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_modal" (click)="book_to_delete = i">Delete</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <app-edit-book [book_to_edit]="book_to_edit" (edited_book)="editedBook($event)"></app-edit-book>
+    <app-delete-book [book_to_delete]="book_to_delete" (deleted_book)="deleteBook($event)"></app-delete-book>
+
+  </ng-template>
+</div>
